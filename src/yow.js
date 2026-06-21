@@ -143,7 +143,7 @@
 
   function processTemplates(templates) {
     for (const template of templates) {
-      const selector = template.dataset.target || (template.id ? `#${template.id}` : null);
+      const selector = template.dataset.target;
       if (!selector) continue;
 
       const target = document.querySelector(selector);

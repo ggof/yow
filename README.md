@@ -156,7 +156,6 @@ Each `<template>` must identify its target element and optionally specify a swap
 
 | Attribute | Description | Default |
 |---|---|---|
-| `id` | CSS ID selector (`#id`) used to find the target | — |
 | `data-target` | Any CSS selector used to find the target (takes priority over `id`) | — |
 | `data-mode` | How to insert the content (see modes below) | `innerHTML` |
 
@@ -178,7 +177,7 @@ Each `<template>` must identify its target element and optionally specify a swap
 <!-- Response contains only <template> tags — OOB mode is activated -->
 
 <!-- Replace the inner content of #notification-count -->
-<template id="notification-count">
+<template data-target="#notification-count">
   <span>5</span>
 </template>
 
@@ -192,7 +191,7 @@ Each `<template>` must identify its target element and optionally specify a swap
 ```
 
 > [!IMPORTANT]
-> A response is treated as OOB **only** if every element in both `<head>` and `<body>` is a `<template>`. If even one non-template element is present, yow falls back to a full page swap.
+> A response is treated as OOB **only** if every element is a `<template>`. If even one non-template element is present, yow falls back to a full page swap.
 
 ---
 
@@ -217,6 +216,12 @@ pnpm run build
 ```
 
 Outputs are written to the `dist/` directory.
+
+---
+
+## Development
+
+`yow` offers a server script for user tests under `scripts/server.js`. Just run `pnpm run server` for testing the implementation.
 
 ---
 
