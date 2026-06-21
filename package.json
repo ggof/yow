@@ -11,6 +11,7 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "packageManager": "pnpm",
   "devDependencies": {
     "rolldown": "^1.1.2",
     "rollup-plugin-gzip": "^4.2.0"
