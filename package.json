@@ -1,0 +1,18 @@
+{
+  "name": "yow",
+  "version": "1.0.0",
+  "description": "An ultra-lightweight AJAX-driven HTML library",
+  "type": "module",
+  "main": "src/yow.js",
+  "scripts": {
+    "server": "node scripts/server.js",
+    "build": "rolldown -c"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "rolldown": "^1.1.2",
+    "rollup-plugin-gzip": "^4.2.0"
+  }
+}
