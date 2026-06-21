@@ -2,25 +2,32 @@ name: Release
 
 on:
   push:
-    tags:
-      - 'v*' # Trigger on version tags like v1.0.0
+    branches:
+      # - 'v*' # Trigger on version tags like v1.0.0
   workflow_dispatch: {}
 
 jobs:
   build-and-release:
+    # Grant explicit write permissions for releases to this job
+    permissions:
+      contents: write
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
 
+      - name: Setup pnpm
+        uses: pnpm/actions-setup
+
+      - name: Install dependencies
+        run: pnpm ci
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm ci
+          cache: pnpm
 
       - name: Build assets (minify, gzip, brotli)
         run: pnpm run build
@@ -34,4 +41,3 @@ jobs:
           prerelease: false
           generate_release_notes: true
           files: dist/*
-          token: ${{ secrets.GITHUB_TOKEN }}
