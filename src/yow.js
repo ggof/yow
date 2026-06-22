@@ -16,6 +16,7 @@
     if (anchor.target && anchor.target !== '_self') return false;
     if (anchor.hasAttribute('download')) return false;
     if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) return false;
+    if (anchor.dataset.boost == 'false') return false
 
     return true;
   }
