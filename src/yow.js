@@ -1,22 +1,22 @@
-(function() {
+(function () {
   'use strict';
 
   // 1. HELPER: Check if anchor click should be intercepted
   function shouldInterceptLink(anchor, event) {
     if (!anchor) return false;
-    
+
     const href = anchor.getAttribute('href');
     if (!href) return false;
-    
+
     if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return false;
-    
+
     const url = new URL(anchor.href, window.location.origin);
     if (!url.protocol.startsWith('http')) return false;
     if (url.origin !== window.location.origin) return false;
     if (anchor.target && anchor.target !== '_self') return false;
     if (anchor.hasAttribute('download')) return false;
     if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) return false;
-    
+
     return true;
   }
 
@@ -73,7 +73,7 @@
       }
       return;
     }
-    
+
     // Inline script
     const script = document.createElement('script');
     script.textContent = el.textContent;
@@ -156,7 +156,7 @@
 
   function processFullSwap(doc, pushToHistory, url) {
     mergeHead(doc.head);
-    
+
     document.body.innerHTML = doc.body.innerHTML;
     for (const attr of doc.body.attributes) {
       document.body.setAttribute(attr.name, attr.value);
@@ -208,8 +208,8 @@
         'X-Library': 'yow'
       }
     })
-    .then(response => handleResponse(response, true))
-    .catch(err => console.error('yow.js fetch error:', err));
+      .then(response => handleResponse(response, true))
+      .catch(err => console.error('yow.js fetch error:', err));
   }
 
   function handleFormSubmit(event) {
@@ -220,7 +220,7 @@
 
     const action = form.getAttribute('action') || window.location.href;
     const method = (form.getAttribute('method') || 'GET').toUpperCase();
-    
+
     const fetchOptions = {
       method: method,
       headers: {
@@ -230,16 +230,18 @@
     };
 
     let fetchUrl = action;
+    const formData = new FormData(form);
 
     if (method === 'GET') {
       const url = new URL(action, window.location.origin);
-      const formData = new FormData(form);
       for (const [key, value] of formData.entries()) {
         url.searchParams.append(key, value);
       }
       fetchUrl = url.toString();
+    } else if (Array.from(formData.values()).some(it => it instanceof File)) {
+      fetchOptions.body = formData;
     } else {
-      fetchOptions.body = new FormData(form);
+      fetchOptions.body = new URLSearchParams(formData)
     }
 
     fetch(fetchUrl, fetchOptions)
@@ -255,8 +257,8 @@
         'X-Library': 'yow'
       }
     })
-    .then(response => handleResponse(response, false))
-    .catch(err => console.error('yow.js popstate fetch error:', err));
+      .then(response => handleResponse(response, false))
+      .catch(err => console.error('yow.js popstate fetch error:', err));
   }
 
   // 7. LISTENERS REGISTRATION
